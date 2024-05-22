@@ -1,5 +1,5 @@
-name: sequence_controller
-description: application process_handler
+name: sequence
+description: sequence
 version: 1.0.0
 publish_to: https://dart.cloudsmith.io/nyx/dart_utilities/
 

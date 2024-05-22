@@ -290,13 +290,13 @@
       "languageVersion": "2.19"
     },
     {
-      "name": "sequence_controller",
+      "name": "sequence",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2024-05-22T12:08:15.989339Z",
+  "generated": "2024-05-22T12:25:13.554741Z",
   "generator": "pub",
   "generatorVersion": "3.0.5"
 }

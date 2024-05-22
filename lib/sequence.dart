@@ -10,7 +10,7 @@ part 'sequence_settings.dart';
 
 enum SequenceState { IDLE, IN_PROGRESS, SUCCEEDED, FAILED }
 
-enum SequenceUpdateType { PROCESS_START, STAGE_START, STAGE_END, PROCESS_END }
+enum SequenceUpdateType { SEQUENCE_START, STAGE_START, STAGE_END, SEQUENCE_END }
 
 abstract class Sequence<STAGE_TYPE> {
   String? _name;
@@ -149,7 +149,7 @@ abstract class Sequence<STAGE_TYPE> {
         return (typeCondition && stageCondition && successCondition);
       });
 
-  Future<SequenceUpdate<STAGE_TYPE>?> waitForSequenceEnd() async => await waitFor(type: SequenceUpdateType.PROCESS_END);
+  Future<SequenceUpdate<STAGE_TYPE>?> waitForSequenceEnd() async => await waitFor(type: SequenceUpdateType.SEQUENCE_END);
 
   Sequence leaveMessage(InboxMessage message) {
     _inbox._streamController.add(message);
@@ -178,7 +178,7 @@ abstract class Sequence<STAGE_TYPE> {
     int n = until != null ? (_stages.indexWhere((stage) => stage.name == until)) : (_stages.length) - 1;
     yield _safeUpdate(
       SequenceUpdate(
-        type: SequenceUpdateType.PROCESS_START,
+        type: SequenceUpdateType.SEQUENCE_START,
       ),
       (update) {
         _setState(SequenceState.IN_PROGRESS);
@@ -225,7 +225,7 @@ abstract class Sequence<STAGE_TYPE> {
     else {
       yield _safeUpdate(
           SequenceUpdate(
-            type: SequenceUpdateType.PROCESS_END,
+            type: SequenceUpdateType.SEQUENCE_END,
             success: result.succeeded,
             extra: result.extra,
           ), (update) {
@@ -360,12 +360,12 @@ class SequenceUpdate<STAGE_TYPE> {
     this.success,
     this.extra,
   }) {
-    if (type == SequenceUpdateType.PROCESS_START || type == SequenceUpdateType.PROCESS_END) {
+    if (type == SequenceUpdateType.SEQUENCE_START || type == SequenceUpdateType.SEQUENCE_END) {
       if (stage != null) {
         /// throw error - sequence start and end aren't a stage
       }
     }
-    if (type == SequenceUpdateType.PROCESS_START || type == SequenceUpdateType.STAGE_START) {
+    if (type == SequenceUpdateType.SEQUENCE_START || type == SequenceUpdateType.STAGE_START) {
       if (success != null) {
         /// throw error - sequence start and stage start don't have results
       }
